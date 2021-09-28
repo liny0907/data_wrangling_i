@@ -1,0 +1,32 @@
+---
+title: "Data Manipulation"
+author: Lin Yang
+date: 2021-09-28
+output: github_document
+ 
+
+---
+
+```{r}
+library(tidyverse)
+options(tibble.print_min = 3)
+
+litters_df = read_csv("./data/FAS_litters.csv",
+  col_types = "ccddiiii")
+litters_df = janitor::clean_names(litters_df)
+
+pups_df = read_csv("./data/FAS_pups.csv",
+  col_types = "ciiiii")
+pups_data = janitor::clean_names(pups_df)
+```
+
+```{r}
+select(litters_df, group, litter_number, gd0_weight, pups_born_alive)
+select(litters_df, group:gd_of_birth)
+```
+
+
+
+
+
+
