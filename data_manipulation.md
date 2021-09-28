@@ -412,3 +412,53 @@ drop_na(litters_df, gd0_weight)
     ## 10 Mod7  #4/2/95/2           23.5        NA            19               9
     ## # … with 24 more rows, and 2 more variables: pups_dead_birth <int>,
     ## #   pups_survive <int>
+
+## `mutate`
+
+let’s add or change columns!
+
+``` r
+mutate(litters_df, 
+       weight_change = gd18_weight - gd0_weight,
+       group = str_to_lower(group))
+```
+
+    ## # A tibble: 49 × 9
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <int>           <int>
+    ##  1 con7  #85                   19.7        34.7          20               3
+    ##  2 con7  #1/2/95/2             27          42            19               8
+    ##  3 con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 con7  #5/4/2/95/2           28.5        44.1          19               5
+    ##  5 con7  #4/2/95/3-3           NA          NA            20               6
+    ##  6 con7  #2/2/95/3-2           NA          NA            20               6
+    ##  7 con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  8 con8  #3/83/3-3             NA          NA            20               9
+    ##  9 con8  #2/95/3               NA          NA            20               8
+    ## 10 con8  #3/5/2/2/95           28.5        NA            20               8
+    ## # … with 39 more rows, and 3 more variables: pups_dead_birth <int>,
+    ## #   pups_survive <int>, weight_change <dbl>
+
+## `arrange`
+
+Let’s arrange the data.
+
+``` r
+arrange(litters_df, gd_of_birth, gd0_weight)
+```
+
+    ## # A tibble: 49 × 8
+    ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>              <dbl>       <dbl>       <int>           <int>
+    ##  1 Mod7  #59                 17          33.4          19               8
+    ##  2 Mod7  #62                 19.5        35.9          19               7
+    ##  3 Mod7  #103                21.4        42.1          19               9
+    ##  4 Mod7  #5/3/83/5-2         22.6        37            19               5
+    ##  5 Mod7  #4/2/95/2           23.5        NA            19               9
+    ##  6 Low7  #112                23.9        40.5          19               6
+    ##  7 Mod7  #94/2               24.4        42.9          19               7
+    ##  8 Low8  #79                 25.4        43.8          19               8
+    ##  9 Con7  #5/5/3/83/3-3       26          41.4          19               6
+    ## 10 Con7  #1/2/95/2           27          42            19               8
+    ## # … with 39 more rows, and 2 more variables: pups_dead_birth <int>,
+    ## #   pups_survive <int>

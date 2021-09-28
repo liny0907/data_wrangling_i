@@ -60,6 +60,30 @@ filter(litters_df, group == "Con7" | gd_of_birth == 20)
 drop_na(litters_df, gd0_weight)
 ```
 
+## `mutate`
+
+let's add or change columns!
+
+```{r}
+mutate(litters_df, 
+       weight_change = gd18_weight - gd0_weight,
+       group = str_to_lower(group))
+```
+
+
+## `arrange`
+
+Let's arrange the data.
+
+```{r}
+arrange(litters_df, gd_of_birth, gd0_weight)
+```
+
+
+
+
+
+
 
 
 
