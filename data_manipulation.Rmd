@@ -9,7 +9,6 @@ output: github_document
 
 ```{r}
 library(tidyverse)
-options(tibble.print_min = 3)
 
 litters_df = read_csv("./data/FAS_litters.csv",
   col_types = "ccddiiii")
@@ -41,6 +40,24 @@ pull(litters_df, group)
 
 ```{r}
 select(pups_df, litter_number, sex, pd_ears)
+```
+
+
+## `filter`
+
+Let's get rid of rows ...
+
+
+```{r}
+filter(litters_df, gd_of_birth == 20) 
+filter(litters_df, group == "Con7")
+filter(litters_df, gd0_weight < 23)
+filter(litters_df, pups_survive != 4)
+filter(litters_df, !(group == "Con7"))
+filter(litters_df, group %in% c("Con7", "Con8"))
+filter(litters_df, group == "Con7", gd_of_birth == 20)
+filter(litters_df, group == "Con7" | gd_of_birth == 20)
+drop_na(litters_df, gd0_weight)
 ```
 
 
