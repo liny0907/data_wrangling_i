@@ -25,7 +25,7 @@ library(haven)
 
 ## pivot longer
 
-## 
+\#\#don’t use `gather` always use `pivot_longer` .
 
 Load the pulse data.
 
