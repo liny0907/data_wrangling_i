@@ -41,6 +41,26 @@ pulse_tidy
 
 ```
 
+## pivot_wider
+
+make up a results data table.
+
+```{r}
+analysis_result = 
+  tibble(
+    group = c("treatment", "treatment", "control", "control"),
+    time = c("a", "b", "a", "b"),
+    group_mean = c(4, 8, 3, 6)
+  )
+
+analysis_result %>% 
+  pivot_wider(
+    names_from = "time", 
+    values_from = "group_mean"
+  ) %>% 
+  knitr::kable()
+
+```
 
 
 

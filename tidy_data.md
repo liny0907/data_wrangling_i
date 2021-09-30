@@ -64,3 +64,28 @@ pulse_tidy
     ##  9 10022  58.5 male  00m      14
     ## 10 10022  58.5 male  01m       3
     ## # … with 4,338 more rows
+
+## pivot\_wider
+
+make up a results data table.
+
+``` r
+analysis_result = 
+  tibble(
+    group = c("treatment", "treatment", "control", "control"),
+    time = c("a", "b", "a", "b"),
+    group_mean = c(4, 8, 3, 6)
+  )
+
+analysis_result %>% 
+  pivot_wider(
+    names_from = "time", 
+    values_from = "group_mean"
+  ) %>% 
+  knitr::kable()
+```
+
+| group     |   a |   b |
+|:----------|----:|----:|
+| treatment |   4 |   8 |
+| control   |   3 |   6 |
