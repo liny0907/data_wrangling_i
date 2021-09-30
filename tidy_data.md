@@ -25,6 +25,8 @@ library(haven)
 
 ## pivot longer
 
+## 
+
 Load the pulse data.
 
 ``` r
@@ -66,6 +68,8 @@ pulse_tidy
     ## # … with 4,338 more rows
 
 ## pivot\_wider
+
+\#\#don’t use `spread` always use `pivot_wider`
 
 make up a results data table.
 
@@ -146,3 +150,74 @@ lotr_tidy
 
 \#\#\#rbind is noteably worse, never use `rbind`, always use `bind_rows`
 .
+
+## joins
+
+Look at FAS data.
+
+``` r
+litter_data = 
+  read_csv("./data/FAS_litters.csv") %>%
+  janitor::clean_names() %>% 
+  separate(group, into = c("dose", "day_of_tx"), sep = 3) %>% ##sep=3, 3 letters in
+  relocate(litter_number) %>% 
+  mutate(dose = str_to_lower(dose))
+```
+
+    ## Rows: 49 Columns: 8
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+pup_data = 
+  read_csv("./data/FAS_pups.csv") %>%
+  janitor::clean_names() %>% 
+  mutate(
+    sex = recode(sex, `1` = "male", `2` = "female"), ## recode:turning an existing value to a new value
+    sex = factor(sex)) 
+```
+
+    ## Rows: 313 Columns: 6
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Litter Number
+    ## dbl (5): Sex, PD ears, PD eyes, PD pivot, PD walk
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Let’s join these up!
+
+``` r
+fas_data = 
+  left_join(pup_data, litter_data, by = "litter_number") %>% 
+  relocate(litter_number, dose, day_of_tx)
+
+fas_data
+```
+
+    ## # A tibble: 313 × 14
+    ##    litter_number dose  day_of_tx sex   pd_ears pd_eyes pd_pivot pd_walk
+    ##    <chr>         <chr> <chr>     <fct>   <dbl>   <dbl>    <dbl>   <dbl>
+    ##  1 #85           con   7         male        4      13        7      11
+    ##  2 #85           con   7         male        4      13        7      12
+    ##  3 #1/2/95/2     con   7         male        5      13        7       9
+    ##  4 #1/2/95/2     con   7         male        5      13        8      10
+    ##  5 #5/5/3/83/3-3 con   7         male        5      13        8      10
+    ##  6 #5/5/3/83/3-3 con   7         male        5      14        6       9
+    ##  7 #5/4/2/95/2   con   7         male       NA      14        5       9
+    ##  8 #4/2/95/3-3   con   7         male        4      13        6       8
+    ##  9 #4/2/95/3-3   con   7         male        4      13        7       9
+    ## 10 #2/2/95/3-2   con   7         male        4      NA        8      10
+    ## # … with 303 more rows, and 6 more variables: gd0_weight <dbl>,
+    ## #   gd18_weight <dbl>, gd_of_birth <dbl>, pups_born_alive <dbl>,
+    ## #   pups_dead_birth <dbl>, pups_survive <dbl>
