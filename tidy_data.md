@@ -22,3 +22,45 @@ library(tidyverse)
 library(readxl)
 library(haven)
 ```
+
+## pivot longer
+
+Load the pulse data.
+
+``` r
+pulse_df = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names()
+```
+
+Let’s try to pivot
+
+``` r
+pulse_tidy = 
+  pulse_df %>% 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    names_prefix = "bdi_score_",
+    values_to = "bdi") %>% 
+  mutate(
+    visit = replace(visit, visit == "bl", "00m"),
+    visit = factor(visit)) 
+
+pulse_tidy
+```
+
+    ## # A tibble: 4,348 × 5
+    ##       id   age sex   visit   bdi
+    ##    <dbl> <dbl> <chr> <fct> <dbl>
+    ##  1 10003  48.0 male  00m       7
+    ##  2 10003  48.0 male  01m       1
+    ##  3 10003  48.0 male  06m       2
+    ##  4 10003  48.0 male  12m       0
+    ##  5 10015  72.5 male  00m       6
+    ##  6 10015  72.5 male  01m      NA
+    ##  7 10015  72.5 male  06m      NA
+    ##  8 10015  72.5 male  12m      NA
+    ##  9 10022  58.5 male  00m      14
+    ## 10 10022  58.5 male  01m       3
+    ## # … with 4,338 more rows
